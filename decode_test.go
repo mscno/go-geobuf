@@ -1,7 +1,6 @@
 package geobuf_test
 
 import (
-	"github.com/mscno/go-geobuf/pkg/encode"
 	"github.com/paulmach/orb"
 	"github.com/paulmach/orb/geojson"
 	"github.com/stretchr/testify/assert"
@@ -278,7 +277,7 @@ func TestDecodeFeatureMultiPolygonWithCustomPrecision(t *testing.T) {
 	var feature_s = `{"id":"1000001","type":"Feature","geometry":{"type":"MultiPolygon","coordinates":[[[[-83.537385,33.9659119],[-83.5084519,33.931233],[-83.4155119,33.918541],[-83.275933,33.847977],[-83.306619,33.811444],[-83.28034,33.7617739],[-83.29145,33.7343149],[-83.406189,33.698307],[-83.479523,33.802265],[-83.505928,33.81776],[-83.533165,33.820923],[-83.647031,33.9061979],[-83.537385,33.9659119]]],[[[-83.537385,33.9659119],[-83.5084519,33.931233],[-83.4155119,33.918541],[-83.275933,33.847977],[-83.306619,33.811444],[-83.28034,33.7617739],[-83.29145,33.7343149],[-83.406189,33.698307],[-83.479523,33.802265],[-83.505928,33.81776],[-83.533165,33.820923],[-83.647031,33.9061979],[-83.537385,33.9659119]]],[[[-83.537385,33.9659119],[-83.5084519,33.931233],[-83.4155119,33.918541],[-83.275933,33.847977],[-83.306619,33.811444],[-83.28034,33.7617739],[-83.29145,33.7343149],[-83.406189,33.698307],[-83.479523,33.802265],[-83.505928,33.81776],[-83.533165,33.820923],[-83.647031,33.9061979],[-83.537385,33.9659119]]]]},"properties":{"AREA":"13219","COLORKEY":"#03E174","area":"13219","index":1109}}`
 	var feature, _ = geojson.UnmarshalFeature([]byte(feature_s))
 
-	encoded, err := EncodeWithOptions(feature, encode.WithPrecision(7))
+	encoded, err := EncodeWithOptions(feature, WithPrecision(7))
 	require.NoError(t, err)
 	decoded, err := Decode(encoded)
 	require.NoError(t, err)

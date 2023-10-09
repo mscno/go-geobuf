@@ -1,7 +1,7 @@
 package encode
 
 import (
-	"github.com/mscno/go-geobuf/pkg/math"
+	"github.com/mscno/go-geobuf/internal/math"
 	"github.com/paulmach/orb"
 	geojson "github.com/paulmach/orb/geojson"
 )
@@ -12,27 +12,7 @@ type EncodingConfig struct {
 	Keys      KeyStore
 }
 
-type EncodingOption func(o *EncodingConfig)
-
-func WithPrecision(precision uint) EncodingOption {
-	return func(o *EncodingConfig) {
-		o.Precision = uint(math.DecodePrecision(uint32(precision)))
-	}
-}
-
-func WithDimension(dimension uint) EncodingOption {
-	return func(o *EncodingConfig) {
-		o.Dimension = dimension
-	}
-}
-
-func WithKeyStore(store KeyStore) EncodingOption {
-	return func(o *EncodingConfig) {
-		o.Keys = store
-	}
-}
-
-func FromAnalysis(obj interface{}) EncodingOption {
+func FromAnalysis(obj interface{}) func(o *EncodingConfig) {
 	return func(o *EncodingConfig) {
 		analyze(obj, o)
 	}

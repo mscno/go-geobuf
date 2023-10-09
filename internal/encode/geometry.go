@@ -1,7 +1,7 @@
 package encode
 
 import (
-	"github.com/mscno/go-geobuf/pkg/math"
+	"github.com/mscno/go-geobuf/internal/math"
 	"github.com/mscno/go-geobuf/proto"
 	"github.com/paulmach/orb"
 	"github.com/paulmach/orb/geojson"

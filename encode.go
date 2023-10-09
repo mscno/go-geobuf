@@ -1,8 +1,8 @@
 package geobuf
 
 import (
-	"github.com/mscno/go-geobuf/pkg/encode"
-	"github.com/mscno/go-geobuf/pkg/math"
+	"github.com/mscno/go-geobuf/internal/encode"
+	"github.com/mscno/go-geobuf/internal/math"
 	geoproto "github.com/mscno/go-geobuf/proto"
 	"github.com/paulmach/orb/geojson"
 )
@@ -11,7 +11,27 @@ func Encode(obj interface{}) (*geoproto.Data, error) {
 	return EncodeWithOptions(obj, encode.FromAnalysis(obj))
 }
 
-func EncodeWithOptions(obj interface{}, opts ...encode.EncodingOption) (*geoproto.Data, error) {
+type EncodingOption func(o *encode.EncodingConfig)
+
+func WithPrecision(precision uint) EncodingOption {
+	return func(o *encode.EncodingConfig) {
+		o.Precision = uint(math.DecodePrecision(uint32(precision)))
+	}
+}
+
+func WithDimension(dimension uint) EncodingOption {
+	return func(o *encode.EncodingConfig) {
+		o.Dimension = dimension
+	}
+}
+
+func WithKeyStore(store encode.KeyStore) EncodingOption {
+	return func(o *encode.EncodingConfig) {
+		o.Keys = store
+	}
+}
+
+func EncodeWithOptions(obj interface{}, opts ...EncodingOption) (*geoproto.Data, error) {
 	cfg := &encode.EncodingConfig{
 		Dimension: 2,
 		Precision: 1,

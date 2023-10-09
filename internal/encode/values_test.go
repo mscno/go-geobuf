@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	. "github.com/mscno/go-geobuf/pkg/encode"
+	. "github.com/mscno/go-geobuf/internal/encode"
 	"github.com/mscno/go-geobuf/proto"
 )
 
