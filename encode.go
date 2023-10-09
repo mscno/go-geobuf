@@ -19,10 +19,14 @@ func EncodeWithOptions(obj interface{}, opts ...encode.EncodingOption) (*proto.D
 	cfg := &encode.EncodingConfig{
 		Dimension: 2,
 		Precision: 1,
-		Keys:      encode.NewKeyStore(),
 	}
 	for _, opt := range opts {
 		opt(cfg)
+	}
+
+	if cfg.Keys == nil {
+		cfg.Keys = encode.NewKeyStore()
+		encode.AnalyzeKeys(obj, cfg)
 	}
 
 	data := &proto.Data{

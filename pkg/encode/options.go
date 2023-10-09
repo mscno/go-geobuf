@@ -38,18 +38,27 @@ func FromAnalysis(obj interface{}) EncodingOption {
 	}
 }
 
+func AnalyzeKeys(obj interface{}, opts *EncodingConfig) {
+	switch t := obj.(type) {
+	case *geojson.FeatureCollection:
+		for _, feature := range t.Features {
+			AnalyzeKeys(feature, opts)
+		}
+	case *geojson.Feature:
+		for key, _ := range t.Properties {
+			opts.Keys.Add(key)
+		}
+	}
+}
+
 func analyze(obj interface{}, opts *EncodingConfig) {
-	opts.Dimension = 2
 	switch t := obj.(type) {
 	case *geojson.FeatureCollection:
 		for _, feature := range t.Features {
 			analyze(feature, opts)
 		}
 	case *geojson.Feature:
-		analyze(geojson.NewGeometry(t.Geometry), opts)
-		for key, _ := range t.Properties {
-			opts.Keys.Add(key)
-		}
+		analyze(geojson.NewGeometry(t.Geometry), opts) // TODO bench fix to not create new geometry
 	case *geojson.Geometry:
 		switch t.Type {
 		case GeometryPoint:
