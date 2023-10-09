@@ -1,13 +1,13 @@
 package encode
 
 import (
-	"github.com/mscno/go-geobuf/pkg/geojson"
 	"github.com/mscno/go-geobuf/proto"
+	"github.com/paulmach/orb/geojson"
 )
 
 func EncodeFeature(feature *geojson.Feature, opts *EncodingConfig) (*proto.Data_Feature, error) {
-	oldGeo := geojson.NewGeometry(feature.Geometry)
-	geo := EncodeGeometry(oldGeo, opts)
+	oldGeo := geojson.NewGeometry(feature.Geometry) // TODO Do we ned this line?
+	geo := EncodeGeometry(oldGeo.Geometry(), opts)
 	f := &proto.Data_Feature{
 		Geometry: geo,
 	}

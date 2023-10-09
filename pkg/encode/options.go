@@ -1,9 +1,9 @@
 package encode
 
 import (
-	"github.com/mscno/go-geobuf/pkg/geojson"
-	"github.com/mscno/go-geobuf/pkg/geometry"
 	"github.com/mscno/go-geobuf/pkg/math"
+	"github.com/paulmach/orb"
+	geojson "github.com/paulmach/orb/geojson"
 )
 
 type EncodingConfig struct {
@@ -53,33 +53,33 @@ func analyze(obj interface{}, opts *EncodingConfig) {
 	case *geojson.Geometry:
 		switch t.Type {
 		case GeometryPoint:
-			updatePrecision(t.Coordinates.(geometry.Point), opts)
+			updatePrecision(t.Geometry().(orb.Point), opts)
 		case GeometryMultiPoint:
-			coords := t.Coordinates.(geometry.MultiPoint)
+			coords := t.Geometry().(orb.MultiPoint)
 			for _, coord := range coords {
 				updatePrecision(coord, opts)
 			}
 		case GeometryLineString:
-			coords := t.Coordinates.(geometry.LineString)
+			coords := t.Geometry().(orb.LineString)
 			for _, coord := range coords {
 				updatePrecision(coord, opts)
 			}
 		case GeometryMultiLineString:
-			lines := t.Coordinates.(geometry.MultiLineString)
+			lines := t.Geometry().(orb.MultiLineString)
 			for _, line := range lines {
 				for _, coord := range line {
 					updatePrecision(coord, opts)
 				}
 			}
 		case GeometryPolygon:
-			lines := t.Coordinates.(geometry.Polygon)
+			lines := t.Geometry().(orb.Polygon)
 			for _, line := range lines {
 				for _, coord := range line {
 					updatePrecision(coord, opts)
 				}
 			}
 		case GeometryMultiPolygon:
-			polygons := t.Coordinates.(geometry.MultiPolygon)
+			polygons := t.Geometry().(orb.MultiPolygon)
 			for _, rings := range polygons {
 				for _, ring := range rings {
 					for _, coord := range ring {
@@ -92,7 +92,7 @@ func analyze(obj interface{}, opts *EncodingConfig) {
 
 }
 
-func updatePrecision(point geometry.Point, opt *EncodingConfig) {
+func updatePrecision(point orb.Point, opt *EncodingConfig) {
 	for _, val := range point {
 		e := math.GetPrecision(val)
 		if e > opt.Precision {

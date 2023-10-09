@@ -2,8 +2,8 @@ package geobuf
 
 import (
 	"github.com/mscno/go-geobuf/pkg/decode"
-	"github.com/mscno/go-geobuf/pkg/geojson"
 	"github.com/mscno/go-geobuf/proto"
+	"github.com/paulmach/orb/geojson"
 )
 
 func Decode(msg *proto.Data) interface{} {

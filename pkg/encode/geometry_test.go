@@ -1,13 +1,12 @@
 package encode_test
 
 import (
+	. "github.com/mscno/go-geobuf/pkg/encode"
+	"github.com/mscno/go-geobuf/proto"
+	"github.com/paulmach/orb"
+	"github.com/paulmach/orb/geojson"
 	"reflect"
 	"testing"
-
-	. "github.com/mscno/go-geobuf/pkg/encode"
-	"github.com/mscno/go-geobuf/pkg/geojson"
-	"github.com/mscno/go-geobuf/pkg/geometry"
-	"github.com/mscno/go-geobuf/proto"
 )
 
 func TestEncodePoint(t *testing.T) {
@@ -35,13 +34,13 @@ func TestEncodePoint(t *testing.T) {
 		},
 	}
 
-	p := geojson.NewGeometry(geometry.Point([]float64{124.123, 234.456}))
+	p := geojson.NewGeometry(orb.Point([]float64{124.123, 234.456}))
 	for i, test := range testCases {
 		expected := &proto.Data_Geometry{
 			Type:   proto.Data_Geometry_POINT,
 			Coords: test.Expected,
 		}
-		encoded := EncodeGeometry(p, &EncodingConfig{
+		encoded := EncodeGeometry(p.Geometry(), &EncodingConfig{
 			Dimension: 2,
 			Precision: test.Precision,
 		})

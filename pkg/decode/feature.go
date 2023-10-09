@@ -1,18 +1,19 @@
 package decode
 
 import (
-	"github.com/mscno/go-geobuf/pkg/geojson"
-	"github.com/mscno/go-geobuf/pkg/geometry"
 	"github.com/mscno/go-geobuf/proto"
+	"github.com/paulmach/orb"
+	"github.com/paulmach/orb/geojson"
 )
 
 func DecodeFeature(msg *proto.Data, feature *proto.Data_Feature, precision, dimension uint32) *geojson.Feature {
 	geo := feature.Geometry
 	decodedGeo := DecodeGeometry(geo, msg.Precision, msg.Dimensions)
+
 	var geoFeature *geojson.Feature
 	switch decodedGeo.Type {
-	case geojson.GeometryCollectionType:
-		collection := make(geometry.Collection, len(decodedGeo.Geometries))
+	case "FeatureCollection":
+		collection := make(orb.Collection, len(decodedGeo.Geometries))
 		for i, child := range decodedGeo.Geometries {
 			collection[i] = child.Coordinates
 		}

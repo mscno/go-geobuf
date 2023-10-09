@@ -2,9 +2,9 @@ package geobuf
 
 import (
 	"github.com/mscno/go-geobuf/pkg/encode"
-	"github.com/mscno/go-geobuf/pkg/geojson"
 	"github.com/mscno/go-geobuf/pkg/math"
 	"github.com/mscno/go-geobuf/proto"
+	"github.com/paulmach/orb/geojson"
 )
 
 func Encode(obj interface{}) *proto.Data {
@@ -50,7 +50,7 @@ func EncodeWithOptions(obj interface{}, opts ...encode.EncodingOption) (*proto.D
 		}
 	case *geojson.Geometry:
 		data.DataType = &proto.Data_Geometry_{
-			Geometry: encode.EncodeGeometry(t, cfg),
+			Geometry: encode.EncodeGeometry(t.Geometry(), cfg),
 		}
 	}
 

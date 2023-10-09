@@ -1,18 +1,18 @@
 package geobuf_test
 
 import (
+	"github.com/paulmach/orb"
+	"github.com/paulmach/orb/geojson"
 	"reflect"
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
 
 	. "github.com/mscno/go-geobuf"
-	"github.com/mscno/go-geobuf/pkg/geojson"
-	"github.com/mscno/go-geobuf/pkg/geometry"
 )
 
 func TestDecodePoint(t *testing.T) {
-	p := geojson.NewGeometry(geometry.Point([]float64{124.123, 234.456}))
+	p := geojson.NewGeometry(orb.Point([]float64{124.123, 234.456}))
 	encoded := Encode(p)
 	decoded := Decode(encoded)
 
@@ -22,9 +22,9 @@ func TestDecodePoint(t *testing.T) {
 }
 
 func TestDecodeMultiPoint(t *testing.T) {
-	p := geojson.NewGeometry(geometry.MultiPoint([]geometry.Point{
-		geometry.Point([]float64{124.123, 234.456}),
-		geometry.Point([]float64{345.567, 456.678}),
+	p := geojson.NewGeometry(orb.MultiPoint([]orb.Point{
+		orb.Point([]float64{124.123, 234.456}),
+		orb.Point([]float64{345.567, 456.678}),
 	}))
 	encoded := Encode(p)
 	decoded := Decode(encoded)
@@ -35,9 +35,9 @@ func TestDecodeMultiPoint(t *testing.T) {
 }
 
 func TestDecodeLineString(t *testing.T) {
-	p := geojson.NewGeometry(geometry.LineString([]geometry.Point{
-		geometry.Point([]float64{124.123, 234.456}),
-		geometry.Point([]float64{345.567, 456.678}),
+	p := geojson.NewGeometry(orb.LineString([]orb.Point{
+		orb.Point([]float64{124.123, 234.456}),
+		orb.Point([]float64{345.567, 456.678}),
 	}))
 	encoded := Encode(p)
 	decoded := Decode(encoded)
@@ -48,14 +48,14 @@ func TestDecodeLineString(t *testing.T) {
 }
 
 func TestDecodeMultiLineString(t *testing.T) {
-	p := geojson.NewGeometry(geometry.MultiLineString([]geometry.LineString{
-		geometry.LineString([]geometry.Point{
-			geometry.Point([]float64{124.123, 234.456}),
-			geometry.Point([]float64{345.567, 456.678}),
+	p := geojson.NewGeometry(orb.MultiLineString([]orb.LineString{
+		orb.LineString([]orb.Point{
+			orb.Point([]float64{124.123, 234.456}),
+			orb.Point([]float64{345.567, 456.678}),
 		}),
-		geometry.LineString([]geometry.Point{
-			geometry.Point([]float64{224.123, 334.456}),
-			geometry.Point([]float64{445.567, 556.678}),
+		orb.LineString([]orb.Point{
+			orb.Point([]float64{224.123, 334.456}),
+			orb.Point([]float64{445.567, 556.678}),
 		}),
 	}))
 	encoded := Encode(p)
@@ -67,16 +67,16 @@ func TestDecodeMultiLineString(t *testing.T) {
 }
 
 func TestDecodePolygon(t *testing.T) {
-	p := geojson.NewGeometry(geometry.Polygon([]geometry.Ring{
-		geometry.Ring([]geometry.Point{
-			geometry.Point([]float64{124.123, 234.456}),
-			geometry.Point([]float64{345.567, 456.678}),
-			geometry.Point([]float64{124.123, 234.456}),
+	p := geojson.NewGeometry(orb.Polygon([]orb.Ring{
+		orb.Ring([]orb.Point{
+			orb.Point([]float64{124.123, 234.456}),
+			orb.Point([]float64{345.567, 456.678}),
+			orb.Point([]float64{124.123, 234.456}),
 		}),
-		geometry.Ring([]geometry.Point{
-			geometry.Point([]float64{224.123, 334.456}),
-			geometry.Point([]float64{445.567, 556.678}),
-			geometry.Point([]float64{224.123, 334.456}),
+		orb.Ring([]orb.Point{
+			orb.Point([]float64{224.123, 334.456}),
+			orb.Point([]float64{445.567, 556.678}),
+			orb.Point([]float64{224.123, 334.456}),
 		}),
 	}))
 	encoded := Encode(p)
@@ -89,29 +89,29 @@ func TestDecodePolygon(t *testing.T) {
 
 func TestDecodeMultiPolygon(t *testing.T) {
 	p := geojson.NewGeometry(
-		geometry.MultiPolygon([]geometry.Polygon{
-			geometry.Polygon([]geometry.Ring{
-				geometry.Ring([]geometry.Point{
-					geometry.Point([]float64{124.123, 234.456}),
-					geometry.Point([]float64{345.567, 456.678}),
-					geometry.Point([]float64{124.123, 234.456}),
+		orb.MultiPolygon([]orb.Polygon{
+			orb.Polygon([]orb.Ring{
+				orb.Ring([]orb.Point{
+					orb.Point([]float64{124.123, 234.456}),
+					orb.Point([]float64{345.567, 456.678}),
+					orb.Point([]float64{124.123, 234.456}),
 				}),
-				geometry.Ring([]geometry.Point{
-					geometry.Point([]float64{224.123, 334.456}),
-					geometry.Point([]float64{445.567, 556.678}),
-					geometry.Point([]float64{224.123, 334.456}),
+				orb.Ring([]orb.Point{
+					orb.Point([]float64{224.123, 334.456}),
+					orb.Point([]float64{445.567, 556.678}),
+					orb.Point([]float64{224.123, 334.456}),
 				}),
 			}),
-			geometry.Polygon([]geometry.Ring{
-				geometry.Ring([]geometry.Point{
-					geometry.Point([]float64{124.123, 234.456}),
-					geometry.Point([]float64{345.567, 456.678}),
-					geometry.Point([]float64{124.123, 234.456}),
+			orb.Polygon([]orb.Ring{
+				orb.Ring([]orb.Point{
+					orb.Point([]float64{124.123, 234.456}),
+					orb.Point([]float64{345.567, 456.678}),
+					orb.Point([]float64{124.123, 234.456}),
 				}),
-				geometry.Ring([]geometry.Point{
-					geometry.Point([]float64{224.123, 334.456}),
-					geometry.Point([]float64{445.567, 556.678}),
-					geometry.Point([]float64{224.123, 334.456}),
+				orb.Ring([]orb.Point{
+					orb.Point([]float64{224.123, 334.456}),
+					orb.Point([]float64{445.567, 556.678}),
+					orb.Point([]float64{224.123, 334.456}),
 				}),
 			}),
 		}))
@@ -126,17 +126,17 @@ func TestDecodeMultiPolygon(t *testing.T) {
 
 func TestDecodeMultiPolygonEfficient(t *testing.T) {
 	p := geojson.NewGeometry(
-		geometry.MultiPolygon([]geometry.Polygon{
-			geometry.Polygon([]geometry.Ring{
-				geometry.Ring([]geometry.Point{
-					geometry.Point([]float64{124.123, 234.456}),
-					geometry.Point([]float64{345.567, 456.678}),
-					geometry.Point([]float64{124.123, 234.456}),
+		orb.MultiPolygon([]orb.Polygon{
+			orb.Polygon([]orb.Ring{
+				orb.Ring([]orb.Point{
+					orb.Point([]float64{124.123, 234.456}),
+					orb.Point([]float64{345.567, 456.678}),
+					orb.Point([]float64{124.123, 234.456}),
 				}),
-				geometry.Ring([]geometry.Point{
-					geometry.Point([]float64{224.123, 334.456}),
-					geometry.Point([]float64{445.567, 556.678}),
-					geometry.Point([]float64{224.123, 334.456}),
+				orb.Ring([]orb.Point{
+					orb.Point([]float64{224.123, 334.456}),
+					orb.Point([]float64{445.567, 556.678}),
+					orb.Point([]float64{224.123, 334.456}),
 				}),
 			}),
 		}))
@@ -149,16 +149,16 @@ func TestDecodeMultiPolygonEfficient(t *testing.T) {
 }
 
 func TestDecodeFeatureIntId(t *testing.T) {
-	p := geojson.NewFeature(geometry.Polygon([]geometry.Ring{
-		geometry.Ring([]geometry.Point{
-			geometry.Point([]float64{124.123, 234.456}),
-			geometry.Point([]float64{345.567, 456.678}),
-			geometry.Point([]float64{124.123, 234.456}),
+	p := geojson.NewFeature(orb.Polygon([]orb.Ring{
+		orb.Ring([]orb.Point{
+			orb.Point([]float64{124.123, 234.456}),
+			orb.Point([]float64{345.567, 456.678}),
+			orb.Point([]float64{124.123, 234.456}),
 		}),
-		geometry.Ring([]geometry.Point{
-			geometry.Point([]float64{224.123, 334.456}),
-			geometry.Point([]float64{445.567, 556.678}),
-			geometry.Point([]float64{224.123, 334.456}),
+		orb.Ring([]orb.Point{
+			orb.Point([]float64{224.123, 334.456}),
+			orb.Point([]float64{445.567, 556.678}),
+			orb.Point([]float64{224.123, 334.456}),
 		}),
 	}))
 	p.ID = int64(1)
@@ -177,16 +177,16 @@ func TestDecodeFeatureIntId(t *testing.T) {
 }
 
 func TestDecodeFeatureStringId(t *testing.T) {
-	p := geojson.NewFeature(geometry.Polygon([]geometry.Ring{
-		geometry.Ring([]geometry.Point{
-			geometry.Point([]float64{124.123, 234.456}),
-			geometry.Point([]float64{345.567, 456.678}),
-			geometry.Point([]float64{124.123, 234.456}),
+	p := geojson.NewFeature(orb.Polygon([]orb.Ring{
+		orb.Ring([]orb.Point{
+			orb.Point([]float64{124.123, 234.456}),
+			orb.Point([]float64{345.567, 456.678}),
+			orb.Point([]float64{124.123, 234.456}),
 		}),
-		geometry.Ring([]geometry.Point{
-			geometry.Point([]float64{224.123, 334.456}),
-			geometry.Point([]float64{445.567, 556.678}),
-			geometry.Point([]float64{224.123, 334.456}),
+		orb.Ring([]orb.Point{
+			orb.Point([]float64{224.123, 334.456}),
+			orb.Point([]float64{445.567, 556.678}),
+			orb.Point([]float64{224.123, 334.456}),
 		}),
 	}))
 	p.ID = "1234"
@@ -206,16 +206,16 @@ func TestDecodeFeatureStringId(t *testing.T) {
 }
 
 func TestDecodeFeatureCollection(t *testing.T) {
-	p := geojson.NewFeature(geometry.Polygon([]geometry.Ring{
-		geometry.Ring([]geometry.Point{
-			geometry.Point([]float64{124.123, 234.456}),
-			geometry.Point([]float64{345.567, 456.678}),
-			geometry.Point([]float64{124.123, 234.456}),
+	p := geojson.NewFeature(orb.Polygon([]orb.Ring{
+		orb.Ring([]orb.Point{
+			orb.Point([]float64{124.123, 234.456}),
+			orb.Point([]float64{345.567, 456.678}),
+			orb.Point([]float64{124.123, 234.456}),
 		}),
-		geometry.Ring([]geometry.Point{
-			geometry.Point([]float64{224.123, 334.456}),
-			geometry.Point([]float64{445.567, 556.678}),
-			geometry.Point([]float64{224.123, 334.456}),
+		orb.Ring([]orb.Point{
+			orb.Point([]float64{224.123, 334.456}),
+			orb.Point([]float64{445.567, 556.678}),
+			orb.Point([]float64{224.123, 334.456}),
 		}),
 	}))
 	p.ID = "1234"
@@ -225,16 +225,16 @@ func TestDecodeFeatureCollection(t *testing.T) {
 	p.Properties["string"] = "string"
 	p.Properties["bool"] = true
 
-	p2 := geojson.NewFeature(geometry.Polygon([]geometry.Ring{
-		geometry.Ring([]geometry.Point{
-			geometry.Point([]float64{224.123, 334.456}),
-			geometry.Point([]float64{445.567, 556.678}),
-			geometry.Point([]float64{224.123, 334.456}),
+	p2 := geojson.NewFeature(orb.Polygon([]orb.Ring{
+		orb.Ring([]orb.Point{
+			orb.Point([]float64{224.123, 334.456}),
+			orb.Point([]float64{445.567, 556.678}),
+			orb.Point([]float64{224.123, 334.456}),
 		}),
-		geometry.Ring([]geometry.Point{
-			geometry.Point([]float64{124.123, 234.456}),
-			geometry.Point([]float64{345.567, 456.678}),
-			geometry.Point([]float64{124.123, 234.456}),
+		orb.Ring([]orb.Point{
+			orb.Point([]float64{124.123, 234.456}),
+			orb.Point([]float64{345.567, 456.678}),
+			orb.Point([]float64{124.123, 234.456}),
 		}),
 	}))
 	p2.ID = "5679"
