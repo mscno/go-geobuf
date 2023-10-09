@@ -3,19 +3,15 @@ package geobuf
 import (
 	"github.com/mscno/go-geobuf/pkg/encode"
 	"github.com/mscno/go-geobuf/pkg/math"
-	"github.com/mscno/go-geobuf/proto"
+	geoproto "github.com/mscno/go-geobuf/proto"
 	"github.com/paulmach/orb/geojson"
 )
 
-func Encode(obj interface{}) *proto.Data {
-	data, err := EncodeWithOptions(obj, encode.FromAnalysis(obj))
-	if err != nil {
-		panic(err)
-	}
-	return data
+func Encode(obj interface{}) (*geoproto.Data, error) {
+	return EncodeWithOptions(obj, encode.FromAnalysis(obj))
 }
 
-func EncodeWithOptions(obj interface{}, opts ...encode.EncodingOption) (*proto.Data, error) {
+func EncodeWithOptions(obj interface{}, opts ...encode.EncodingOption) (*geoproto.Data, error) {
 	cfg := &encode.EncodingConfig{
 		Dimension: 2,
 		Precision: 1,
@@ -29,7 +25,7 @@ func EncodeWithOptions(obj interface{}, opts ...encode.EncodingOption) (*proto.D
 		encode.AnalyzeKeys(obj, cfg)
 	}
 
-	data := &proto.Data{
+	data := &geoproto.Data{
 		Keys:       cfg.Keys.Keys(),
 		Dimensions: uint32(cfg.Dimension),
 		Precision:  math.EncodePrecision(cfg.Precision),
@@ -41,7 +37,7 @@ func EncodeWithOptions(obj interface{}, opts ...encode.EncodingOption) (*proto.D
 		if err != nil {
 			return nil, err
 		}
-		data.DataType = &proto.Data_FeatureCollection_{
+		data.DataType = &geoproto.Data_FeatureCollection_{
 			FeatureCollection: collection,
 		}
 	case *geojson.Feature:
@@ -49,11 +45,11 @@ func EncodeWithOptions(obj interface{}, opts ...encode.EncodingOption) (*proto.D
 		if err != nil {
 			return nil, err
 		}
-		data.DataType = &proto.Data_Feature_{
+		data.DataType = &geoproto.Data_Feature_{
 			Feature: feature,
 		}
 	case *geojson.Geometry:
-		data.DataType = &proto.Data_Geometry_{
+		data.DataType = &geoproto.Data_Geometry_{
 			Geometry: encode.EncodeGeometry(t.Geometry(), cfg),
 		}
 	}

@@ -9,15 +9,15 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
-
 	. "github.com/mscno/go-geobuf"
 )
 
 func TestDecodePoint(t *testing.T) {
 	p := geojson.NewGeometry(orb.Point([]float64{124.123, 234.456}))
-	encoded := Encode(p)
-	decoded := Decode(encoded)
+	encoded, err := Encode(p)
+	require.NoError(t, err)
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
 
 	if !reflect.DeepEqual(p, decoded) {
 		t.Errorf("Expected %+v, got %+v", p, decoded)
@@ -29,8 +29,10 @@ func TestDecodeMultiPoint(t *testing.T) {
 		orb.Point([]float64{124.123, 234.456}),
 		orb.Point([]float64{345.567, 456.678}),
 	}))
-	encoded := Encode(p)
-	decoded := Decode(encoded)
+	encoded, err := Encode(p)
+	require.NoError(t, err)
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
 
 	if !reflect.DeepEqual(p, decoded) {
 		t.Errorf("Expected %+v, got %+v", p, decoded)
@@ -42,8 +44,10 @@ func TestDecodeLineString(t *testing.T) {
 		orb.Point([]float64{124.123, 234.456}),
 		orb.Point([]float64{345.567, 456.678}),
 	}))
-	encoded := Encode(p)
-	decoded := Decode(encoded)
+	encoded, err := Encode(p)
+	require.NoError(t, err)
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
 
 	if !reflect.DeepEqual(p, decoded) {
 		t.Errorf("Expected %+v, got %+v", p, decoded)
@@ -61,8 +65,10 @@ func TestDecodeMultiLineString(t *testing.T) {
 			orb.Point([]float64{445.567, 556.678}),
 		}),
 	}))
-	encoded := Encode(p)
-	decoded := Decode(encoded)
+	encoded, err := Encode(p)
+	require.NoError(t, err)
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
 
 	if !reflect.DeepEqual(p, decoded) {
 		t.Errorf("Expected %+v, got %+v", p, decoded)
@@ -82,8 +88,10 @@ func TestDecodePolygon(t *testing.T) {
 			orb.Point([]float64{224.123, 334.456}),
 		}),
 	}))
-	encoded := Encode(p)
-	decoded := Decode(encoded)
+	encoded, err := Encode(p)
+	require.NoError(t, err)
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
 
 	if !reflect.DeepEqual(p, decoded) {
 		t.Errorf("Expected %+v, got %+v", p, decoded)
@@ -118,9 +126,10 @@ func TestDecodeMultiPolygon(t *testing.T) {
 				}),
 			}),
 		}))
-	encoded := Encode(p)
-	spew.Dump(encoded)
-	decoded := Decode(encoded)
+	encoded, err := Encode(p)
+	require.NoError(t, err)
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
 
 	if !reflect.DeepEqual(p, decoded) {
 		t.Errorf("Expected %+v, got %+v", p, decoded)
@@ -143,8 +152,10 @@ func TestDecodeMultiPolygonEfficient(t *testing.T) {
 				}),
 			}),
 		}))
-	encoded := Encode(p)
-	decoded := Decode(encoded)
+	encoded, err := Encode(p)
+	require.NoError(t, err)
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
 
 	if !reflect.DeepEqual(p, decoded) {
 		t.Errorf("Expected %+v, got %+v", p, decoded)
@@ -170,9 +181,10 @@ func TestDecodeFeatureIntId(t *testing.T) {
 	p.Properties["neg_int"] = -1
 	p.Properties["string"] = "string"
 	p.Properties["bool"] = true
-	encoded := Encode(p)
-	spew.Dump(encoded)
-	decoded := Decode(encoded)
+	encoded, err := Encode(p)
+	require.NoError(t, err)
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
 
 	if !reflect.DeepEqual(p, decoded) {
 		t.Errorf("Expected %+v, got %+v", p, decoded)
@@ -198,10 +210,11 @@ func TestDecodeFeatureStringId(t *testing.T) {
 	p.Properties["neg_int"] = -1
 	p.Properties["string"] = "string"
 	p.Properties["bool"] = true
-	encoded := Encode(p)
-	spew.Dump(encoded)
+	encoded, err := Encode(p)
+	require.NoError(t, err)
 
-	decoded := Decode(encoded)
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
 
 	if !reflect.DeepEqual(p, decoded) {
 		t.Errorf("Expected %+v, got %+v", p, decoded)
@@ -250,9 +263,10 @@ func TestDecodeFeatureCollection(t *testing.T) {
 	collection := geojson.NewFeatureCollection()
 	collection.Append(p)
 	collection.Append(p2)
-	encoded := Encode(collection)
-
-	decoded := Decode(encoded)
+	encoded, err := Encode(collection)
+	require.NoError(t, err)
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
 
 	if !reflect.DeepEqual(collection, decoded) {
 		t.Errorf("Expected %+v, got %+v", p, decoded)
@@ -266,7 +280,8 @@ func TestDecodeFeatureMultiPolygonWithCustomPrecision(t *testing.T) {
 
 	encoded, err := EncodeWithOptions(feature, encode.WithPrecision(7))
 	require.NoError(t, err)
-	decoded := Decode(encoded)
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
 
 	assert.Equal(t, feature.ID, "1000001")
 	assert.Equal(t, feature, decoded)
@@ -277,8 +292,10 @@ func TestDecodeFeatureMultiPolygonWithHoles(t *testing.T) {
 	var feature_s = `{"type":"Feature","properties":{},"geometry":{"type":"MultiPolygon","coordinates":[[[[102,2],[103,2],[103,3],[102,3],[102,2]]],[[[100,0],[101,0],[101,1],[100,1],[100,0]],[[100.2,0.2],[100.8,0.2],[100.8,0.8],[100.2,0.8],[100.2,0.2]]]]}}`
 	var feature, _ = geojson.UnmarshalFeature([]byte(feature_s))
 
-	encoded := Encode(feature)
-	decoded := Decode(encoded)
+	encoded, err := Encode(feature)
+	require.NoError(t, err)
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
 	assert.Equal(t, uint32(1), encoded.Precision)
 	assert.Equal(t, feature, decoded)
 
