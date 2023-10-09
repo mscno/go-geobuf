@@ -1,10 +1,10 @@
 package decode
 
 import (
-	"github.com/cairnapp/go-geobuf/pkg/geojson"
-	"github.com/cairnapp/go-geobuf/pkg/geometry"
-	"github.com/cairnapp/go-geobuf/pkg/math"
-	"github.com/cairnapp/go-geobuf/proto"
+	"github.com/mscno/go-geobuf/pkg/geojson"
+	"github.com/mscno/go-geobuf/pkg/geometry"
+	"github.com/mscno/go-geobuf/pkg/math"
+	"github.com/mscno/go-geobuf/proto"
 )
 
 func DecodeGeometry(geo *proto.Data_Geometry, precision, dimensions uint32) *geojson.Geometry {

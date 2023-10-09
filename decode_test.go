@@ -6,9 +6,9 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 
-	. "github.com/cairnapp/go-geobuf"
-	"github.com/cairnapp/go-geobuf/pkg/geojson"
-	"github.com/cairnapp/go-geobuf/pkg/geometry"
+	. "github.com/mscno/go-geobuf"
+	"github.com/mscno/go-geobuf/pkg/geojson"
+	"github.com/mscno/go-geobuf/pkg/geometry"
 )
 
 func TestDecodePoint(t *testing.T) {

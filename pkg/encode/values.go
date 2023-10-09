@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"reflect"
 
-	"github.com/cairnapp/go-geobuf/proto"
+	"github.com/mscno/go-geobuf/proto"
 )
 
 func EncodeValue(val interface{}) (*proto.Data_Value, error) {

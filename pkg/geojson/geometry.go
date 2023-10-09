@@ -1,7 +1,7 @@
 package geojson
 
 import (
-	"github.com/cairnapp/go-geobuf/pkg/geometry"
+	"github.com/mscno/go-geobuf/pkg/geometry"
 )
 
 const (

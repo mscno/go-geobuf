@@ -1,9 +1,9 @@
 package decode
 
 import (
-	"github.com/cairnapp/go-geobuf/pkg/geojson"
-	"github.com/cairnapp/go-geobuf/pkg/geometry"
-	"github.com/cairnapp/go-geobuf/proto"
+	"github.com/mscno/go-geobuf/pkg/geojson"
+	"github.com/mscno/go-geobuf/pkg/geometry"
+	"github.com/mscno/go-geobuf/proto"
 )
 
 func DecodeFeature(msg *proto.Data, feature *proto.Data_Feature, precision, dimension uint32) *geojson.Feature {

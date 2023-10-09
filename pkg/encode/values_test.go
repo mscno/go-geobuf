@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	. "github.com/cairnapp/go-geobuf/pkg/encode"
-	"github.com/cairnapp/go-geobuf/proto"
+	. "github.com/mscno/go-geobuf/pkg/encode"
+	"github.com/mscno/go-geobuf/proto"
 )
 
 func TestEncodeIntValue(t *testing.T) {

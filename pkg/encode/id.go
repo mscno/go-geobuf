@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/cairnapp/go-geobuf/proto"
+	"github.com/mscno/go-geobuf/proto"
 )
 
 func EncodeIntId(id interface{}) (*proto.Data_Feature_IntId, error) {
