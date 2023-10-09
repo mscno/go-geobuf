@@ -1,6 +1,7 @@
 package decode
 
 import (
+	"encoding/json"
 	"github.com/mscno/go-geobuf/proto"
 	"github.com/paulmach/orb"
 	"github.com/paulmach/orb/geojson"
@@ -38,12 +39,19 @@ func DecodeFeature(msg *proto.Data, feature *proto.Data_Feature, precision, dime
 		case *proto.Data_Value_NegIntValue:
 			geoFeature.Properties[msg.Keys[keyIdx]] = int(actualVal.NegIntValue) * -1
 		case *proto.Data_Value_JsonValue:
-			geoFeature.Properties[msg.Keys[keyIdx]] = actualVal.JsonValue
+			var m map[string]interface{}
+			err := json.Unmarshal(actualVal.JsonValue, &m)
+			if err != nil {
+				panic(err)
+			}
+			geoFeature.Properties[msg.Keys[keyIdx]] = m
 		}
 	}
 	switch id := feature.IdType.(type) {
 	case *proto.Data_Feature_Id:
-		geoFeature.ID = id.Id
+		if id != nil {
+			geoFeature.ID = id.Id
+		}
 	case *proto.Data_Feature_IntId:
 		geoFeature.ID = id.IntId
 	}
