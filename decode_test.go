@@ -1,8 +1,11 @@
 package geobuf_test
 
 import (
+	"github.com/mscno/go-geobuf/pkg/encode"
 	"github.com/paulmach/orb"
 	"github.com/paulmach/orb/geojson"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"reflect"
 	"testing"
 
@@ -254,4 +257,29 @@ func TestDecodeFeatureCollection(t *testing.T) {
 	if !reflect.DeepEqual(collection, decoded) {
 		t.Errorf("Expected %+v, got %+v", p, decoded)
 	}
+}
+
+func TestDecodeFeatureMultiPolygonWithCustomPrecision(t *testing.T) {
+	// todo add test for bounding box: "bbox":[-83.647031,33.698307,-83.275933,33.9659119]
+	var feature_s = `{"id":"1000001","type":"Feature","geometry":{"type":"MultiPolygon","coordinates":[[[[-83.537385,33.9659119],[-83.5084519,33.931233],[-83.4155119,33.918541],[-83.275933,33.847977],[-83.306619,33.811444],[-83.28034,33.7617739],[-83.29145,33.7343149],[-83.406189,33.698307],[-83.479523,33.802265],[-83.505928,33.81776],[-83.533165,33.820923],[-83.647031,33.9061979],[-83.537385,33.9659119]]],[[[-83.537385,33.9659119],[-83.5084519,33.931233],[-83.4155119,33.918541],[-83.275933,33.847977],[-83.306619,33.811444],[-83.28034,33.7617739],[-83.29145,33.7343149],[-83.406189,33.698307],[-83.479523,33.802265],[-83.505928,33.81776],[-83.533165,33.820923],[-83.647031,33.9061979],[-83.537385,33.9659119]]],[[[-83.537385,33.9659119],[-83.5084519,33.931233],[-83.4155119,33.918541],[-83.275933,33.847977],[-83.306619,33.811444],[-83.28034,33.7617739],[-83.29145,33.7343149],[-83.406189,33.698307],[-83.479523,33.802265],[-83.505928,33.81776],[-83.533165,33.820923],[-83.647031,33.9061979],[-83.537385,33.9659119]]]]},"properties":{"AREA":"13219","COLORKEY":"#03E174","area":"13219","index":1109}}`
+	var feature, _ = geojson.UnmarshalFeature([]byte(feature_s))
+
+	encoded, err := EncodeWithOptions(feature, encode.WithPrecision(7))
+	require.NoError(t, err)
+	decoded := Decode(encoded)
+
+	assert.Equal(t, feature.ID, "1000001")
+	assert.Equal(t, feature, decoded)
+
+}
+
+func TestDecodeFeatureMultiPolygonWithHoles(t *testing.T) {
+	var feature_s = `{"type":"Feature","properties":{},"geometry":{"type":"MultiPolygon","coordinates":[[[[102,2],[103,2],[103,3],[102,3],[102,2]]],[[[100,0],[101,0],[101,1],[100,1],[100,0]],[[100.2,0.2],[100.8,0.2],[100.8,0.8],[100.2,0.8],[100.2,0.2]]]]}}`
+	var feature, _ = geojson.UnmarshalFeature([]byte(feature_s))
+
+	encoded := Encode(feature)
+	decoded := Decode(encoded)
+	assert.Equal(t, uint32(1), encoded.Precision)
+	assert.Equal(t, feature, decoded)
+
 }

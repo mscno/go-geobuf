@@ -268,7 +268,7 @@ func TestEncodeJsonValue(t *testing.T) {
 
 		switch cast := val.ValueType.(type) {
 		case *proto.Data_Value_JsonValue:
-			if test.Expected != cast.JsonValue {
+			if test.Expected != string(cast.JsonValue) {
 				t.Errorf("Case [%d]: Expected %s, got %s", i, test.Expected, cast.JsonValue)
 			}
 		default:

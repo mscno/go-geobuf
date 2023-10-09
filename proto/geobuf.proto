@@ -62,7 +62,7 @@ message Data {
             uint64 pos_int_value = 3;
             uint64 neg_int_value = 4;
             bool bool_value = 5;
-            string json_value = 6;
+            bytes json_value = 6;
         }
     }
 }

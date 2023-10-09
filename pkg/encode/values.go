@@ -79,7 +79,7 @@ func encodeJSON(val interface{}) (*proto.Data_Value, error) {
 	encoded, err := json.Marshal(val)
 	return &proto.Data_Value{
 		ValueType: &proto.Data_Value_JsonValue{
-			JsonValue: string(encoded),
+			JsonValue: encoded,
 		},
 	}, err
 }
