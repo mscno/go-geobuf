@@ -35,6 +35,8 @@ func EncodeIntId(id interface{}) (*proto.Data_Feature_IntId, error) {
 
 func EncodeId(id interface{}) (*proto.Data_Feature_Id, error) {
 	switch t := id.(type) {
+	case nil:
+		return nil, nil
 	case string:
 		return encodeId(t), nil
 	case *string:
