@@ -3,7 +3,6 @@ module github.com/mscno/go-geobuf
 go 1.21.1
 
 require (
-	github.com/davecgh/go-spew v1.1.1
 	github.com/paulmach/orb v0.10.0
 	github.com/stretchr/testify v1.6.1
 	google.golang.org/protobuf v1.31.0
@@ -14,4 +13,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-require go.mongodb.org/mongo-driver v1.11.4 // indirect
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	go.mongodb.org/mongo-driver v1.11.4 // indirect
+)

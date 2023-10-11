@@ -7,38 +7,20 @@ import (
 )
 
 type EncodingConfig struct {
-	Dimension uint
-	Precision uint
-	Keys      KeyStore
+	Dimension          uint
+	Precision          uint
+	HardcodedPrecision bool
+	Keys               KeyStore
 }
 
-func FromAnalysis(obj interface{}) func(o *EncodingConfig) {
-	return func(o *EncodingConfig) {
-		analyze(obj, o)
-	}
-}
-
-func AnalyzeKeys(obj interface{}, opts *EncodingConfig) {
+func AnalyzePrecision(obj interface{}, opts *EncodingConfig) {
 	switch t := obj.(type) {
 	case *geojson.FeatureCollection:
 		for _, feature := range t.Features {
-			AnalyzeKeys(feature, opts)
+			AnalyzePrecision(feature, opts)
 		}
 	case *geojson.Feature:
-		for key, _ := range t.Properties {
-			opts.Keys.Add(key)
-		}
-	}
-}
-
-func analyze(obj interface{}, opts *EncodingConfig) {
-	switch t := obj.(type) {
-	case *geojson.FeatureCollection:
-		for _, feature := range t.Features {
-			analyze(feature, opts)
-		}
-	case *geojson.Feature:
-		analyze(geojson.NewGeometry(t.Geometry), opts) // TODO bench fix to not create new geometry
+		AnalyzePrecision(geojson.NewGeometry(t.Geometry), opts) // TODO bench fix to not create new geometry
 	case *geojson.Geometry:
 		switch t.Type {
 		case GeometryPoint:
@@ -78,7 +60,6 @@ func analyze(obj interface{}, opts *EncodingConfig) {
 			}
 		}
 	}
-
 }
 
 func updatePrecision(point orb.Point, opt *EncodingConfig) {
@@ -86,6 +67,19 @@ func updatePrecision(point orb.Point, opt *EncodingConfig) {
 		e := math.GetPrecision(val)
 		if e > opt.Precision {
 			opt.Precision = e
+		}
+	}
+}
+
+func AnalyzeKeys(obj interface{}, opts *EncodingConfig) {
+	switch t := obj.(type) {
+	case *geojson.FeatureCollection:
+		for _, feature := range t.Features {
+			AnalyzeKeys(feature, opts)
+		}
+	case *geojson.Feature:
+		for key, _ := range t.Properties {
+			opts.Keys.Add(key)
 		}
 	}
 }

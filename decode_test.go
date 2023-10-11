@@ -23,6 +23,34 @@ func TestDecodePoint(t *testing.T) {
 	}
 }
 
+func TestDecodePointWithPrecision(t *testing.T) {
+	p := geojson.NewGeometry(orb.Point([]float64{124.123, 234.456}))
+	encoded, err := Encode(p, WithPrecision(2))
+	require.NoError(t, err)
+	p2 := geojson.NewGeometry(orb.Point([]float64{124.12, 234.46}))
+
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
+
+	if !reflect.DeepEqual(p2, decoded) {
+		t.Errorf("Expected %+v, got %+v", p2, decoded)
+	}
+}
+
+func TestDecodePointWithAnalyzedPrecision(t *testing.T) {
+	p := geojson.NewGeometry(orb.Point([]float64{124.123, 234.456}))
+	encoded, err := Encode(p)
+	require.NoError(t, err)
+	p2 := geojson.NewGeometry(orb.Point([]float64{124.123, 234.456}))
+
+	decoded, err := Decode(encoded)
+	require.NoError(t, err)
+
+	if !reflect.DeepEqual(p2, decoded) {
+		t.Errorf("Expected %+v, got %+v", p2, decoded)
+	}
+}
+
 func TestDecodeMultiPoint(t *testing.T) {
 	p := geojson.NewGeometry(orb.MultiPoint([]orb.Point{
 		orb.Point([]float64{124.123, 234.456}),
@@ -277,7 +305,7 @@ func TestDecodeFeatureMultiPolygonWithCustomPrecision(t *testing.T) {
 	var feature_s = `{"id":"1000001","type":"Feature","geometry":{"type":"MultiPolygon","coordinates":[[[[-83.537385,33.9659119],[-83.5084519,33.931233],[-83.4155119,33.918541],[-83.275933,33.847977],[-83.306619,33.811444],[-83.28034,33.7617739],[-83.29145,33.7343149],[-83.406189,33.698307],[-83.479523,33.802265],[-83.505928,33.81776],[-83.533165,33.820923],[-83.647031,33.9061979],[-83.537385,33.9659119]]],[[[-83.537385,33.9659119],[-83.5084519,33.931233],[-83.4155119,33.918541],[-83.275933,33.847977],[-83.306619,33.811444],[-83.28034,33.7617739],[-83.29145,33.7343149],[-83.406189,33.698307],[-83.479523,33.802265],[-83.505928,33.81776],[-83.533165,33.820923],[-83.647031,33.9061979],[-83.537385,33.9659119]]],[[[-83.537385,33.9659119],[-83.5084519,33.931233],[-83.4155119,33.918541],[-83.275933,33.847977],[-83.306619,33.811444],[-83.28034,33.7617739],[-83.29145,33.7343149],[-83.406189,33.698307],[-83.479523,33.802265],[-83.505928,33.81776],[-83.533165,33.820923],[-83.647031,33.9061979],[-83.537385,33.9659119]]]]},"properties":{"AREA":"13219","COLORKEY":"#03E174","area":"13219","index":1109}}`
 	var feature, _ = geojson.UnmarshalFeature([]byte(feature_s))
 
-	encoded, err := EncodeWithOptions(feature, WithPrecision(7))
+	encoded, err := Encode(feature, WithPrecision(7))
 	require.NoError(t, err)
 	decoded, err := Decode(encoded)
 	require.NoError(t, err)

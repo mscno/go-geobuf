@@ -7,14 +7,11 @@ import (
 	"github.com/paulmach/orb/geojson"
 )
 
-func Encode(obj interface{}) (*geoproto.Data, error) {
-	return EncodeWithOptions(obj, encode.FromAnalysis(obj))
-}
-
 type EncodingOption func(o *encode.EncodingConfig)
 
 func WithPrecision(precision uint) EncodingOption {
 	return func(o *encode.EncodingConfig) {
+		o.HardcodedPrecision = true
 		o.Precision = uint(math.DecodePrecision(uint32(precision)))
 	}
 }
@@ -25,13 +22,13 @@ func WithDimension(dimension uint) EncodingOption {
 	}
 }
 
-func WithKeyStore(store encode.KeyStore) EncodingOption {
+func WithKeys(keys []string) EncodingOption {
 	return func(o *encode.EncodingConfig) {
-		o.Keys = store
+		o.Keys = encode.NewKeyStoreWithKeys(keys)
 	}
 }
 
-func EncodeWithOptions(obj interface{}, opts ...EncodingOption) (*geoproto.Data, error) {
+func Encode(obj interface{}, opts ...EncodingOption) (*geoproto.Data, error) {
 	cfg := &encode.EncodingConfig{
 		Dimension: 2,
 		Precision: 1,
@@ -43,6 +40,10 @@ func EncodeWithOptions(obj interface{}, opts ...EncodingOption) (*geoproto.Data,
 	if cfg.Keys == nil {
 		cfg.Keys = encode.NewKeyStore()
 		encode.AnalyzeKeys(obj, cfg)
+	}
+
+	if !cfg.HardcodedPrecision {
+		encode.AnalyzePrecision(obj, cfg)
 	}
 
 	data := &geoproto.Data{
