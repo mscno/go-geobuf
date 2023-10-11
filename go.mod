@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/paulmach/orb v0.10.0
-	github.com/stretchr/testify v1.6.1
+	github.com/stretchr/testify v1.8.4
 	google.golang.org/protobuf v1.31.0
 )
 
@@ -15,5 +15,6 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/stretchr/objx v0.5.0 // indirect
 	go.mongodb.org/mongo-driver v1.11.4 // indirect
 )
