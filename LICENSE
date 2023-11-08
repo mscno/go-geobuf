@@ -1,6 +1,7 @@
 MIT License
 
-Copyright (c) 2018 cairnapp
+Copyright (c) 2023 [mscno]
+Copyright for portions of project github.com/mscno/go-geobuf are held by [cairnapp, 2018] as part of project github.com/cairnapp/go-geobuf. All other copyright for project Foo are held by [mscno, 2023].
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

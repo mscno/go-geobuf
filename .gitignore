@@ -1,2 +1,7 @@
 vendor/
 .idea/
+.fleet/
+tmp
+local
+.env
+coverage.out
