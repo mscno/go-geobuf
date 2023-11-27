@@ -1,5 +1,8 @@
 run: test cover
 
+buf:
+     buf generate --template proto/buf.go.yaml
+
 check:
     go vet ./...
     go fmt ./...

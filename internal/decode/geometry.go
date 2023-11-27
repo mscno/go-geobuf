@@ -45,7 +45,7 @@ func makeMultiPolygon(lengths []uint32, inCords []int64, precision uint32, dimen
 			skip += int(lengths[i+1]) * int(dimension)
 		}
 
-		lengths = lengths[ringCount+1:] // TODO Fix this line by adding 1
+		lengths = lengths[ringCount+1:]
 		inCords = inCords[skip:]
 	}
 	return orb.MultiPolygon(polygons)

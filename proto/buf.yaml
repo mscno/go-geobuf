@@ -1,5 +1,5 @@
 version: v1
-
+name: buf.build/mscno/geobuf
 breaking:
   use:
     - FILE
