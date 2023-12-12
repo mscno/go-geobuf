@@ -258,6 +258,14 @@ func TestEncodeJsonValue(t *testing.T) {
 			Val:      map[string]int{"1": 1},
 			Expected: "{\"1\":1}",
 		},
+		{
+			Val:      map[string]interface{}{"1": nil},
+			Expected: "{\"1\":null}",
+		},
+		{
+			Val:      map[string]interface{}{"1": []string{"A", "B", "C"}},
+			Expected: "{\"1\":[" + fmt.Sprintf("%q,%q,%q", "A", "B", "C") + "]}",
+		},
 	}
 
 	for i, test := range testCases {

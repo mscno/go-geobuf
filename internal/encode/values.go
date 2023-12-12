@@ -30,7 +30,16 @@ func encodeValue(v reflect.Value, val interface{}) (*proto.Data_Value, error) {
 		return encodeString(v.String())
 	case reflect.Ptr:
 		return encodeValue(v.Elem(), val)
+	case reflect.Slice:
+		return encodeJSON(val)
+	case reflect.Map:
+		return encodeJSON(val)
+	case reflect.Struct:
+		return encodeJSON(val)
+	case reflect.Invalid:
+		return encodeJSON(val)
 	default:
+		panic("Unknown type: " + v.Kind().String())
 		return encodeJSON(v.Interface())
 	}
 }

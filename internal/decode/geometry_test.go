@@ -6,6 +6,12 @@ import (
 	"testing"
 )
 
+/*
+POINT [x, y]
+LINE [[x, y], [x, y], ...]
+POLYGON [[[x, y], [x, y], ...], [[x, y], [x, y], ...], ...]
+MULTIPOLYGON [[[[x, y], [x, y], ...], [[x, y], [x, y], ...], ...], [[[x, y], [x, y], ...], [[x, y], [x, y], ...], ...], ...]
+*/
 func Test_makeMultiPolygon(t *testing.T) {
 	type args struct {
 		lengths   []uint32
