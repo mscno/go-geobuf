@@ -1,6 +1,6 @@
 syntax = "proto3";
 package geobuf;
-option go_package = "github.com/mscno/go-geobuf/proto";
+option go_package = "github.com/mscno/go-geobuf/geobufpb";
 
 message Data {
     repeated string keys = 1; // global arrays of unique keys
@@ -38,13 +38,14 @@ message Data {
         repeated uint32 custom_properties = 15;
 
         enum Type {
-            POINT = 0;
-            MULTIPOINT = 1;
-            LINESTRING = 2;
-            MULTILINESTRING = 3;
-            POLYGON = 4;
-            MULTIPOLYGON = 5;
-            GEOMETRYCOLLECTION = 6;
+            EMPTY = 0;
+            POINT = 1;
+            MULTIPOINT = 2;
+            LINESTRING = 3;
+            MULTILINESTRING = 4;
+            POLYGON = 5;
+            MULTIPOLYGON = 6;
+            GEOMETRYCOLLECTION = 7;
         }
     }
 

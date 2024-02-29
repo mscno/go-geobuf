@@ -2,12 +2,12 @@ package decode
 
 import (
 	"encoding/json"
-	"github.com/mscno/go-geobuf/proto"
+	"github.com/mscno/go-geobuf/geobufpb"
 	"github.com/paulmach/orb"
 	"github.com/paulmach/orb/geojson"
 )
 
-func DecodeFeature(msg *proto.Data, feature *proto.Data_Feature, precision, dimension uint32) *geojson.Feature {
+func DecodeFeature(msg *geobufpb.Data, feature *geobufpb.Data_Feature, precision, dimension uint32) *geojson.Feature {
 	geo := feature.Geometry
 	decodedGeo := DecodeGeometry(geo, msg.Precision, msg.Dimensions)
 
@@ -28,17 +28,17 @@ func DecodeFeature(msg *proto.Data, feature *proto.Data_Feature, precision, dime
 		valIdx := feature.Properties[i+1]
 		val := feature.Values[valIdx]
 		switch actualVal := val.ValueType.(type) {
-		case *proto.Data_Value_BoolValue:
+		case *geobufpb.Data_Value_BoolValue:
 			geoFeature.Properties[msg.Keys[keyIdx]] = actualVal.BoolValue
-		case *proto.Data_Value_DoubleValue:
+		case *geobufpb.Data_Value_DoubleValue:
 			geoFeature.Properties[msg.Keys[keyIdx]] = actualVal.DoubleValue
-		case *proto.Data_Value_StringValue:
+		case *geobufpb.Data_Value_StringValue:
 			geoFeature.Properties[msg.Keys[keyIdx]] = actualVal.StringValue
-		case *proto.Data_Value_PosIntValue:
+		case *geobufpb.Data_Value_PosIntValue:
 			geoFeature.Properties[msg.Keys[keyIdx]] = uint(actualVal.PosIntValue)
-		case *proto.Data_Value_NegIntValue:
+		case *geobufpb.Data_Value_NegIntValue:
 			geoFeature.Properties[msg.Keys[keyIdx]] = int(actualVal.NegIntValue) * -1
-		case *proto.Data_Value_JsonValue:
+		case *geobufpb.Data_Value_JsonValue:
 			var m map[string]interface{}
 			err := json.Unmarshal(actualVal.JsonValue, &m)
 			if err != nil {
@@ -48,11 +48,11 @@ func DecodeFeature(msg *proto.Data, feature *proto.Data_Feature, precision, dime
 		}
 	}
 	switch id := feature.IdType.(type) {
-	case *proto.Data_Feature_Id:
+	case *geobufpb.Data_Feature_Id:
 		if id != nil {
 			geoFeature.ID = id.Id
 		}
-	case *proto.Data_Feature_IntId:
+	case *geobufpb.Data_Feature_IntId:
 		geoFeature.ID = id.IntId
 	}
 	return geoFeature

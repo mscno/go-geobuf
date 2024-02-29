@@ -1,7 +1,7 @@
 run: test cover
 
 buf:
-     buf generate --template proto/buf.go.yaml
+     buf generate --template geobufpb/buf.go.yaml
 
 check:
     go vet ./...

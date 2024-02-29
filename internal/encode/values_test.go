@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/mscno/go-geobuf/geobufpb"
 	. "github.com/mscno/go-geobuf/internal/encode"
-	"github.com/mscno/go-geobuf/proto"
 )
 
 func TestEncodeIntValue(t *testing.T) {
@@ -119,11 +119,11 @@ func TestEncodeIntValue(t *testing.T) {
 		}
 
 		switch cast := val.ValueType.(type) {
-		case *proto.Data_Value_PosIntValue:
+		case *geobufpb.Data_Value_PosIntValue:
 			if uint64(test.Expected) != cast.PosIntValue {
 				t.Errorf("Case [%d]: Expected %d, got %d", i, test.Expected, cast.PosIntValue)
 			}
-		case *proto.Data_Value_NegIntValue:
+		case *geobufpb.Data_Value_NegIntValue:
 			if uint64(test.Expected) != cast.NegIntValue {
 				t.Errorf("Case [%d]: Expected %d, got %d", i, test.Expected, cast.NegIntValue)
 			}
@@ -155,7 +155,7 @@ func TestEncodeStringValue(t *testing.T) {
 		}
 
 		switch cast := val.ValueType.(type) {
-		case *proto.Data_Value_StringValue:
+		case *geobufpb.Data_Value_StringValue:
 			if test.Expected != cast.StringValue {
 				t.Errorf("Case [%d]: Expected %s, got %s", i, test.Expected, cast.StringValue)
 			}
@@ -195,7 +195,7 @@ func TestEncodeFloatValue(t *testing.T) {
 		}
 
 		switch cast := val.ValueType.(type) {
-		case *proto.Data_Value_DoubleValue:
+		case *geobufpb.Data_Value_DoubleValue:
 			if test.Expected != cast.DoubleValue {
 				t.Errorf("Case [%d]: Expected %f, got %f", i, test.Expected, cast.DoubleValue)
 			}
@@ -235,7 +235,7 @@ func TestEncodeBoolValue(t *testing.T) {
 		}
 
 		switch cast := val.ValueType.(type) {
-		case *proto.Data_Value_BoolValue:
+		case *geobufpb.Data_Value_BoolValue:
 			if test.Expected != cast.BoolValue {
 				t.Errorf("Case [%d]: Expected %t, got %t", i, test.Expected, cast.BoolValue)
 			}
@@ -275,7 +275,7 @@ func TestEncodeJsonValue(t *testing.T) {
 		}
 
 		switch cast := val.ValueType.(type) {
-		case *proto.Data_Value_JsonValue:
+		case *geobufpb.Data_Value_JsonValue:
 			if test.Expected != string(cast.JsonValue) {
 				t.Errorf("Case [%d]: Expected %s, got %s", i, test.Expected, cast.JsonValue)
 			}

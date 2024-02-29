@@ -1,12 +1,12 @@
 package encode
 
 import (
-	"github.com/mscno/go-geobuf/proto"
+	"github.com/mscno/go-geobuf/geobufpb"
 	"github.com/paulmach/orb/geojson"
 )
 
-func EncodeFeatureCollection(collection *geojson.FeatureCollection, opts *EncodingConfig) (*proto.Data_FeatureCollection, error) {
-	features := make([]*proto.Data_Feature, len(collection.Features))
+func EncodeFeatureCollection(collection *geojson.FeatureCollection, opts *EncodingConfig) (*geobufpb.Data_FeatureCollection, error) {
+	features := make([]*geobufpb.Data_Feature, len(collection.Features))
 
 	for i, feature := range collection.Features {
 		encoded, err := EncodeFeature(feature, opts)
@@ -16,7 +16,7 @@ func EncodeFeatureCollection(collection *geojson.FeatureCollection, opts *Encodi
 		features[i] = encoded
 	}
 
-	return &proto.Data_FeatureCollection{
+	return &geobufpb.Data_FeatureCollection{
 		Features: features,
 	}, nil
 }

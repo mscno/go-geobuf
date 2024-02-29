@@ -4,15 +4,15 @@ import (
 	"encoding/json"
 	"reflect"
 
-	"github.com/mscno/go-geobuf/proto"
+	"github.com/mscno/go-geobuf/geobufpb"
 )
 
-func EncodeValue(val interface{}) (*proto.Data_Value, error) {
+func EncodeValue(val interface{}) (*geobufpb.Data_Value, error) {
 	v := reflect.ValueOf(val)
 	return encodeValue(v, val)
 }
 
-func encodeValue(v reflect.Value, val interface{}) (*proto.Data_Value, error) {
+func encodeValue(v reflect.Value, val interface{}) (*geobufpb.Data_Value, error) {
 	switch v.Kind() {
 	case reflect.Bool:
 		return encodeBool(v.Bool())
@@ -44,50 +44,50 @@ func encodeValue(v reflect.Value, val interface{}) (*proto.Data_Value, error) {
 	}
 }
 
-func encodeInt(val uint64, positive bool) (*proto.Data_Value, error) {
+func encodeInt(val uint64, positive bool) (*geobufpb.Data_Value, error) {
 	if positive {
-		return &proto.Data_Value{
-			ValueType: &proto.Data_Value_PosIntValue{
+		return &geobufpb.Data_Value{
+			ValueType: &geobufpb.Data_Value_PosIntValue{
 				PosIntValue: val,
 			},
 		}, nil
 	}
 
-	return &proto.Data_Value{
-		ValueType: &proto.Data_Value_NegIntValue{
+	return &geobufpb.Data_Value{
+		ValueType: &geobufpb.Data_Value_NegIntValue{
 			NegIntValue: val,
 		},
 	}, nil
 }
 
-func encodeDouble(val float64) (*proto.Data_Value, error) {
-	return &proto.Data_Value{
-		ValueType: &proto.Data_Value_DoubleValue{
+func encodeDouble(val float64) (*geobufpb.Data_Value, error) {
+	return &geobufpb.Data_Value{
+		ValueType: &geobufpb.Data_Value_DoubleValue{
 			DoubleValue: val,
 		},
 	}, nil
 }
 
-func encodeString(val string) (*proto.Data_Value, error) {
-	return &proto.Data_Value{
-		ValueType: &proto.Data_Value_StringValue{
+func encodeString(val string) (*geobufpb.Data_Value, error) {
+	return &geobufpb.Data_Value{
+		ValueType: &geobufpb.Data_Value_StringValue{
 			StringValue: val,
 		},
 	}, nil
 }
 
-func encodeBool(val bool) (*proto.Data_Value, error) {
-	return &proto.Data_Value{
-		ValueType: &proto.Data_Value_BoolValue{
+func encodeBool(val bool) (*geobufpb.Data_Value, error) {
+	return &geobufpb.Data_Value{
+		ValueType: &geobufpb.Data_Value_BoolValue{
 			BoolValue: val,
 		},
 	}, nil
 }
 
-func encodeJSON(val interface{}) (*proto.Data_Value, error) {
+func encodeJSON(val interface{}) (*geobufpb.Data_Value, error) {
 	encoded, err := json.Marshal(val)
-	return &proto.Data_Value{
-		ValueType: &proto.Data_Value_JsonValue{
+	return &geobufpb.Data_Value{
+		ValueType: &geobufpb.Data_Value_JsonValue{
 			JsonValue: encoded,
 		},
 	}, err

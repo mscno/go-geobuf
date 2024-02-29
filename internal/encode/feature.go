@@ -1,14 +1,18 @@
 package encode
 
 import (
-	"github.com/mscno/go-geobuf/proto"
+	"github.com/mscno/go-geobuf/geobufpb"
 	"github.com/paulmach/orb/geojson"
 )
 
-func EncodeFeature(feature *geojson.Feature, opts *EncodingConfig) (*proto.Data_Feature, error) {
+func EncodeFeature(feature *geojson.Feature, opts *EncodingConfig) (*geobufpb.Data_Feature, error) {
 	oldGeo := geojson.NewGeometry(feature.Geometry) // TODO Do we ned this line?
-	geo := EncodeGeometry(oldGeo.Geometry(), opts)
-	f := &proto.Data_Feature{
+	geo, err := EncodeGeometry(oldGeo.Geometry(), opts)
+	if err != nil {
+		return nil, err
+
+	}
+	f := &geobufpb.Data_Feature{
 		Geometry: geo,
 	}
 
@@ -24,7 +28,7 @@ func EncodeFeature(feature *geojson.Feature, opts *EncodingConfig) (*proto.Data_
 	}
 
 	properties := make([]uint32, 0, 2*len(feature.Properties))
-	values := make([]*proto.Data_Value, 0, len(feature.Properties))
+	values := make([]*geobufpb.Data_Value, 0, len(feature.Properties))
 	for key, val := range feature.Properties {
 		encoded, err := EncodeValue(val)
 		if err != nil {

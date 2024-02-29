@@ -1,11 +1,15 @@
 package geobuf
 
 import (
+	"errors"
+	geoproto "github.com/mscno/go-geobuf/geobufpb"
 	"github.com/mscno/go-geobuf/internal/encode"
 	"github.com/mscno/go-geobuf/internal/math"
-	geoproto "github.com/mscno/go-geobuf/proto"
 	"github.com/paulmach/orb/geojson"
 )
+
+var ErrUnsupportedType = errors.New("unsupported type: object is not geojson")
+var ErrNilInput = errors.New("invalid input: object is nil")
 
 type EncodingOption func(o *encode.EncodingConfig)
 
@@ -25,6 +29,12 @@ func WithDimension(dimension uint) EncodingOption {
 func WithKeys(keys []string) EncodingOption {
 	return func(o *encode.EncodingConfig) {
 		o.Keys = encode.NewKeyStoreWithKeys(keys)
+	}
+}
+
+func WithAllowEmptyGeometry(allow bool) EncodingOption {
+	return func(o *encode.EncodingConfig) {
+		o.AllowEmptyGeometry = allow
 	}
 }
 
@@ -53,6 +63,8 @@ func Encode(obj interface{}, opts ...EncodingOption) (*geoproto.Data, error) {
 	}
 
 	switch t := obj.(type) {
+	case nil:
+		return nil, ErrNilInput
 	case *geojson.FeatureCollection:
 		collection, err := encode.EncodeFeatureCollection(t, cfg)
 		if err != nil {
@@ -70,9 +82,15 @@ func Encode(obj interface{}, opts ...EncodingOption) (*geoproto.Data, error) {
 			Feature: feature,
 		}
 	case *geojson.Geometry:
-		data.DataType = &geoproto.Data_Geometry_{
-			Geometry: encode.EncodeGeometry(t.Geometry(), cfg),
+		geom, err := encode.EncodeGeometry(t.Geometry(), cfg)
+		if err != nil {
+			return nil, err
 		}
+		data.DataType = &geoproto.Data_Geometry_{
+			Geometry: geom,
+		}
+	default:
+		return nil, ErrUnsupportedType
 	}
 
 	return data, nil

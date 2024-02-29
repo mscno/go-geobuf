@@ -10,6 +10,7 @@ type EncodingConfig struct {
 	Dimension          uint
 	Precision          uint
 	HardcodedPrecision bool
+	AllowEmptyGeometry bool
 	Keys               KeyStore
 }
 

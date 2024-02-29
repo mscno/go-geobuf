@@ -1,25 +1,27 @@
 package decode
 
 import (
+	"github.com/mscno/go-geobuf/geobufpb"
 	"github.com/mscno/go-geobuf/internal/math"
-	"github.com/mscno/go-geobuf/proto"
 	"github.com/paulmach/orb"
 	"github.com/paulmach/orb/geojson"
 )
 
-func DecodeGeometry(geo *proto.Data_Geometry, precision, dimensions uint32) *geojson.Geometry {
+func DecodeGeometry(geo *geobufpb.Data_Geometry, precision, dimensions uint32) *geojson.Geometry {
 	switch geo.Type {
-	case proto.Data_Geometry_POINT:
+	case geobufpb.Data_Geometry_EMPTY:
+		return geojson.NewGeometry(nil)
+	case geobufpb.Data_Geometry_POINT:
 		return geojson.NewGeometry(makePoint(geo.Coords, precision))
-	case proto.Data_Geometry_MULTIPOINT:
+	case geobufpb.Data_Geometry_MULTIPOINT:
 		return geojson.NewGeometry(makeMultiPoint(geo.Coords, precision, dimensions))
-	case proto.Data_Geometry_LINESTRING:
+	case geobufpb.Data_Geometry_LINESTRING:
 		return geojson.NewGeometry(makeLineString(geo.Coords, precision, dimensions))
-	case proto.Data_Geometry_MULTILINESTRING:
+	case geobufpb.Data_Geometry_MULTILINESTRING:
 		return geojson.NewGeometry(makeMultiLineString(geo.Lengths, geo.Coords, precision, dimensions))
-	case proto.Data_Geometry_POLYGON:
+	case geobufpb.Data_Geometry_POLYGON:
 		return geojson.NewGeometry(makePolygon(geo.Lengths, geo.Coords, precision, dimensions))
-	case proto.Data_Geometry_MULTIPOLYGON:
+	case geobufpb.Data_Geometry_MULTIPOLYGON:
 		return geojson.NewGeometry(makeMultiPolygon(geo.Lengths, geo.Coords, precision, dimensions))
 	}
 	return &geojson.Geometry{}

@@ -1,7 +1,7 @@
 package encode
 
 import (
-	"github.com/mscno/go-geobuf/proto"
+	"github.com/mscno/go-geobuf/geobufpb"
 	"github.com/paulmach/orb"
 	"github.com/paulmach/orb/geojson"
 	"reflect"
@@ -35,14 +35,17 @@ func TestEncodePoint(t *testing.T) {
 
 	p := geojson.NewGeometry(orb.Point([2]float64{124.123, 234.456}))
 	for i, test := range testCases {
-		expected := &proto.Data_Geometry{
-			Type:   proto.Data_Geometry_POINT,
+		expected := &geobufpb.Data_Geometry{
+			Type:   geobufpb.Data_Geometry_POINT,
 			Coords: test.Expected,
 		}
-		encoded := EncodeGeometry(p.Geometry(), &EncodingConfig{
+		encoded, err := EncodeGeometry(p.Geometry(), &EncodingConfig{
 			Dimension: 2,
 			Precision: test.Precision,
 		})
+		if err != nil {
+			t.Errorf("Case [%d]: Unexpected error: %s", i, err)
+		}
 
 		if !reflect.DeepEqual(encoded, expected) {
 			t.Errorf("Case [%d]: Expected %+v, got %+v", i, expected, encoded)
