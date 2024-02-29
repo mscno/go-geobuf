@@ -3,9 +3,9 @@ module github.com/mscno/go-geobuf
 go 1.21.1
 
 require (
-	github.com/paulmach/orb v0.10.0
+	github.com/paulmach/orb v0.11.1
 	github.com/stretchr/testify v1.8.4
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.32.0
 )
 
 require (
