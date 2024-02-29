@@ -2,7 +2,7 @@ package geobuf
 
 import (
 	"errors"
-	geoproto "github.com/mscno/go-geobuf/geobufpb"
+	"github.com/mscno/go-geobuf/geobufpb"
 	"github.com/mscno/go-geobuf/internal/encode"
 	"github.com/mscno/go-geobuf/internal/math"
 	"github.com/paulmach/orb/geojson"
@@ -38,7 +38,7 @@ func WithAllowEmptyGeometry(allow bool) EncodingOption {
 	}
 }
 
-func Encode(obj interface{}, opts ...EncodingOption) (*geoproto.Data, error) {
+func Encode(obj interface{}, opts ...EncodingOption) (*geobufpb.Data, error) {
 	cfg := &encode.EncodingConfig{
 		Dimension: 2,
 		Precision: 1,
@@ -56,7 +56,7 @@ func Encode(obj interface{}, opts ...EncodingOption) (*geoproto.Data, error) {
 		encode.AnalyzePrecision(obj, cfg)
 	}
 
-	data := &geoproto.Data{
+	data := &geobufpb.Data{
 		Keys:       cfg.Keys.Keys(),
 		Dimensions: uint32(cfg.Dimension),
 		Precision:  math.EncodePrecision(cfg.Precision),
@@ -70,7 +70,7 @@ func Encode(obj interface{}, opts ...EncodingOption) (*geoproto.Data, error) {
 		if err != nil {
 			return nil, err
 		}
-		data.DataType = &geoproto.Data_FeatureCollection_{
+		data.DataType = &geobufpb.Data_FeatureCollection_{
 			FeatureCollection: collection,
 		}
 	case *geojson.Feature:
@@ -78,7 +78,7 @@ func Encode(obj interface{}, opts ...EncodingOption) (*geoproto.Data, error) {
 		if err != nil {
 			return nil, err
 		}
-		data.DataType = &geoproto.Data_Feature_{
+		data.DataType = &geobufpb.Data_Feature_{
 			Feature: feature,
 		}
 	case *geojson.Geometry:
@@ -86,7 +86,7 @@ func Encode(obj interface{}, opts ...EncodingOption) (*geoproto.Data, error) {
 		if err != nil {
 			return nil, err
 		}
-		data.DataType = &geoproto.Data_Geometry_{
+		data.DataType = &geobufpb.Data_Geometry_{
 			Geometry: geom,
 		}
 	default:

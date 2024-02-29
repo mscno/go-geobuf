@@ -40,7 +40,6 @@ func encodeValue(v reflect.Value, val interface{}) (*geobufpb.Data_Value, error)
 		return encodeJSON(val)
 	default:
 		panic("Unknown type: " + v.Kind().String())
-		return encodeJSON(v.Interface())
 	}
 }
 

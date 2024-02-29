@@ -1,4 +1,4 @@
-run: test cover
+run: buf check test cover
 
 buf:
      buf generate --template geobufpb/buf.go.yaml
