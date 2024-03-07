@@ -1,27 +1,8 @@
 version: v1
 plugins:
-  # Documentation
-  - name: doc
-    out: gen/doc
-    opt: html,index.html
-    strategy: all
-
-  - name: doc
-    out: gen/doc
-    opt: markdown,index.md
-    strategy: all
-
-  - name: doc
-    out: gen/doc
-    opt: json,doc.json
-    strategy: all
-
   # Go
   - plugin: go
     out: .
-    opt: paths=source_relative
-  - plugin: elixir
-    out: ./elixir
     opt: paths=source_relative
   - name: go-vtproto
     out: .

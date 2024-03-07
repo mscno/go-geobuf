@@ -1,0 +1,17 @@
+version: v1
+plugins:
+  # Documentation
+  - name: doc
+    out: gen/doc
+    opt: html,index.html
+    strategy: all
+
+  - name: doc
+    out: gen/doc
+    opt: markdown,index.md
+    strategy: all
+
+  - name: doc
+    out: gen/doc
+    opt: json,doc.json
+    strategy: all

@@ -237,11 +237,16 @@ func TestDecodeFeatureStringId(t *testing.T) {
 	p.Properties["neg_int"] = -1
 	p.Properties["string"] = "string"
 	p.Properties["bool"] = true
+	p.Properties["null"] = nil
+	p.Properties["array"] = []interface{}{1.0, 2.0, 3.0}
+	p.Properties["object"] = map[string]interface{}{"key": "value"}
 	encoded, err := Encode(p)
 	require.NoError(t, err)
 
 	decoded, err := Decode(encoded)
 	require.NoError(t, err)
+
+	require.Equal(t, p, decoded)
 
 	if !reflect.DeepEqual(p, decoded) {
 		t.Errorf("Expected %+v, got %+v", p, decoded)
